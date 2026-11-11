@@ -1,0 +1,3817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finanzas Numéricas - GC y GCP | Joel Choque Yujra</title>
+
+<style>
+:root{
+  --bg:#f4f7fb;
+  --card:#fff;
+  --ink:#182338;
+  --muted:#68768d;
+  --primary:#2457d6;
+  --primary2:#eaf0ff;
+  --line:#dfe6f0;
+  --ok:#087a50;
+  --okbg:#e7f7ef;
+  --warn:#9a650d;
+  --warnbg:#fff5df;
+  --bad:#b72f38;
+  --badbg:#fff0f1;
+  --dark:#12203b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:14px/1.55 Arial,Helvetica,sans-serif
+}
+
+button,input,select{
+  font:inherit
+}
+
+button{
+  cursor:pointer
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh
+}
+
+.sidebar{
+  background:var(--dark);
+  color:#fff;
+  padding:22px 15px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:auto
+}
+
+.brand{
+  font-weight:800;
+  font-size:18px;
+  padding:8px 10px
+}
+
+.brand small{
+  display:block;
+  color:#9fb0cc;
+  font-size:10px;
+  margin-top:6px;
+  letter-spacing:1px
+}
+
+.navtitle{
+  font-size:10px;
+  color:#8fa0bd;
+  font-weight:800;
+  letter-spacing:1.4px;
+  margin:25px 10px 8px
+}
+
+.nav a{
+  display:block;
+  color:#cbd5e6;
+  text-decoration:none;
+  padding:9px 11px;
+  border-radius:8px;
+  font-size:12px;
+  margin:3px 0
+}
+
+.nav a:hover,
+.nav a.active{
+  background:#293d65;
+  color:#fff
+}
+
+.sideinfo{
+  color:#8fa0bd;
+  font-size:10px;
+  margin:25px 10px;
+  line-height:1.7
+}
+
+main{
+  max-width:1500px;
+  width:100%;
+  padding:28px clamp(18px,4vw,58px) 60px
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+  margin-bottom:20px
+}
+
+.eyebrow{
+  color:var(--primary);
+  font-weight:800;
+  font-size:10px;
+  letter-spacing:1.4px;
+  text-transform:uppercase
+}
+
+h1{
+  font-size:clamp(26px,4vw,40px);
+  line-height:1.1;
+  margin:8px 0;
+  letter-spacing:-1px
+}
+
+h2{
+  font-size:23px;
+  margin:0 0 5px
+}
+
+h3{
+  font-size:15px;
+  margin:0 0 9px
+}
+
+p{
+  color:#52617a;
+  margin:7px 0 12px
+}
+
+.muted,
+.small{
+  color:var(--muted);
+  font-size:11px
+}
+
+.status,
+.pill{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:800;
+  background:#edf1f7;
+  color:#586780
+}
+
+.status{
+  background:var(--okbg);
+  color:var(--ok)
+}
+
+.hero{
+  background:linear-gradient(115deg,#142746,#315be8);
+  color:#fff;
+  border-radius:18px;
+  padding:30px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 12px 32px #17356b16
+}
+
+.hero:after{
+  content:"Ax = b";
+  position:absolute;
+  right:20px;
+  bottom:-28px;
+  font-size:80px;
+  font-weight:900;
+  color:#ffffff12
+}
+
+.hero p{
+  color:#dce5ff;
+  max-width:760px
+}
+
+.hero .eyebrow{
+  color:#bdd0ff
+}
+
+.hero .pill{
+  background:#ffffff20;
+  color:#fff
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:17px;
+  box-shadow:0 8px 25px #13284a09
+}
+
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:16px 0
+}
+
+.metric{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:15px
+}
+
+.metric span{
+  font-size:10px;
+  color:var(--muted)
+}
+
+.metric strong{
+  display:block;
+  font-size:23px;
+  margin-top:5px
+}
+
+section{
+  margin:34px 0;
+  scroll-margin-top:15px
+}
+
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:15px;
+  margin-bottom:13px
+}
+
+.head p{
+  font-size:12px;
+  margin:4px 0
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:13px
+}
+
+.step{
+  display:flex;
+  gap:11px;
+  margin:14px 0
+}
+
+.stepnum{
+  flex:0 0 29px;
+  height:29px;
+  border-radius:9px;
+  background:var(--primary2);
+  color:var(--primary);
+  display:grid;
+  place-items:center;
+  font-weight:800
+}
+
+.step p{
+  font-size:12px;
+  margin:3px 0
+}
+
+.btn{
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  border-radius:8px;
+  padding:9px 13px;
+  font-weight:800;
+  font-size:12px
+}
+
+.btn.secondary{
+  background:var(--primary2);
+  color:var(--primary)
+}
+
+.btn.light{
+  background:#edf1f6;
+  color:#33445d
+}
+
+.btn:hover{
+  filter:brightness(.95)
+}
+
+.btnrow{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px
+}
+
+.field{
+  margin:10px 0
+}
+
+label{
+  display:block;
+  font-size:11px;
+  color:#60708a;
+  font-weight:800;
+  margin-bottom:5px
+}
+
+input,
+select{
+  width:100%;
+  border:1px solid #d7dfeb;
+  border-radius:8px;
+  padding:8px;
+  background:#fff;
+  color:var(--ink)
+}
+
+input:focus,
+select:focus{
+  outline:2px solid #c8d5ff;
+  border-color:var(--primary)
+}
+
+.matrixwrap{
+  overflow:auto
+}
+
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:11px
+}
+
+th,
+td{
+  padding:8px;
+  border-bottom:1px solid var(--line);
+  vertical-align:top
+}
+
+th{
+  background:#f0f4f9;
+  color:#52617a;
+  text-align:left
+}
+
+td input{
+  min-width:65px;
+  text-align:right;
+  padding:6px
+}
+
+.result{
+  background:#f6f8fd;
+  border:1px solid #dfe7f3;
+  border-radius:9px;
+  padding:12px;
+  margin:10px 0
+}
+
+.info{
+  background:#eef4ff;
+  border-left:3px solid var(--primary);
+  border-radius:7px;
+  padding:11px 13px;
+  color:#344b78;
+  font-size:11px;
+  margin:12px 0
+}
+
+.warning{
+  background:var(--warnbg);
+  border-left:3px solid #d49a29;
+  border-radius:7px;
+  padding:11px 13px;
+  color:#76571b;
+  font-size:11px
+}
+
+.success{
+  background:var(--okbg);
+  color:var(--ok)
+}
+
+.failure{
+  background:var(--badbg);
+  color:var(--bad)
+}
+
+.chart{
+  height:260px
+}
+
+canvas{
+  width:100%;
+  height:100%;
+  display:block
+}
+
+footer{
+  border-top:1px solid var(--line);
+  margin-top:45px;
+  padding:22px 0;
+  color:var(--muted);
+  font-size:10px
+}
+
+@media(max-width:900px){
+
+  .layout{
+    grid-template-columns:1fr
+  }
+
+  .sidebar{
+    position:relative;
+    height:auto;
+    padding:12px
+  }
+
+  .nav{
+    display:flex;
+    overflow:auto;
+    gap:3px
+  }
+
+  .nav a{
+    white-space:nowrap
+  }
+
+  .navtitle,
+  .sideinfo{
+    display:none
+  }
+
+  .main{
+    padding:20px 4%
+  }
+
+  .metrics{
+    grid-template-columns:repeat(2,1fr)
+  }
+}
+
+@media(max-width:620px){
+
+  .grid2,
+  .grid3{
+    grid-template-columns:1fr
+  }
+
+  .head{
+    align-items:start;
+    flex-direction:column
+  }
+
+  .hero{
+    padding:23px
+  }
+
+  .hero:after{
+    font-size:55px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="brand">
+FINANZAS NUMÉRICAS
+<small>LABORATORIO DE MÉTODOS NUMÉRICOS</small>
+</div>
+
+<div class="navtitle">MENÚ</div>
+
+<nav class="nav">
+
+<a href="#inicio" class="active">⌂ Inicio</a>
+<a href="#guia">◎ Cómo usar</a>
+<a href="#caso">▤ Caso financiero</a>
+<a href="#modelo">▦ Modelo Ax=b</a>
+<a href="#datos">⚙ Datos y ejecución</a>
+<a href="#escenarios">◈ Escenarios</a>
+<a href="#referencia">∑ Solución directa</a>
+<a href="#comparacion">⇄ GC vs GCP</a>
+<a href="#errores">▥ Errores y κ(A)</a>
+<a href="#comparativa">▤ Comparación global</a>
+<a href="#qa">✓ Pruebas QA</a>
+<a href="#cierre">☷ Conclusiones</a>
+
+</nav>
+
+<div class="sideinfo">
+ESTUDIANTE<br>
+<b>Joel Choque Yujra</b>
+<br><br>
+INGENIERÍA DE SISTEMAS<br>
+UNIVERSIDAD MAYOR DE SAN ANDRÉS
+</div>
+
+</aside>
+
+<main>
+
+<div class="top">
+
+<div>
+<div class="eyebrow">Proyecto académico · Métodos Numéricos</div>
+<div class="muted">Aplicación financiera de GC y GCP</div>
+</div>
+
+<span class="status">● Sistema listo</span>
+
+</div>
+
+<section id="inicio">
+
+<div class="hero">
+
+<div class="eyebrow">
+UMSA · INGENIERÍA DE SISTEMAS
+</div>
+
+<h1>
+Planificación financiera con Gradientes Conjugados Precondicionados
+</h1>
+
+<p>
+Aplicación interactiva para formular y resolver un sistema Ax=b,
+comparar una solución directa con GC y GCP, analizar errores y
+estudiar el condicionamiento de tres escenarios.
+</p>
+
+<span class="pill">
+Estudiante: Joel Choque Yujra · Sistema 4×4 · Tolerancia 10⁻⁶
+</span>
+
+</div>
+
+<div class="card" style="margin-top:14px">
+
+<h3>Datos académicos</h3>
+
+<p>
+
+<b>Estudiante:</b> Joel Choque Yujra<br>
+
+<b>Universidad:</b> Universidad Mayor de San Andrés (UMSA)<br>
+
+<b>Facultad:</b> Ciencias Puras y Naturales<br>
+
+<b>Carrera:</b> Informática<br>
+
+<b>Área:</b> Ingeniería de Sistemas<br>
+
+<b>Asignatura:</b> Métodos Numéricos
+
+</p>
+
+</div>
+
+<div class="metrics">
+
+<div class="metric">
+<span>Variables</span>
+<strong>4</strong>
+</div>
+
+<div class="metric">
+<span>Escenarios</span>
+<strong>3</strong>
+</div>
+
+<div class="metric">
+<span>Tolerancia</span>
+<strong>10⁻⁶</strong>
+</div>
+
+<div class="metric">
+<span>Métodos</span>
+<strong>GC + GCP</strong>
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Propósito</h3>
+
+<p>
+Resolver un modelo lineal simétrico definido positivo y analizar
+cómo el condicionamiento y el precondicionamiento afectan la
+solución iterativa.
+</p>
+
+<div class="btnrow">
+
+<button class="btn" onclick="go('guia')">
+Comenzar guía →
+</button>
+
+<button class="btn secondary" onclick="loadScenario('ideal')">
+Cargar Ideal
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="guia">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">Módulo 1</div>
+
+<h2>¿Cómo utilizar el programa?</h2>
+
+<p>
+Pasos sencillos para una demostración ante la docente.
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="step">
+
+<div class="stepnum">1</div>
+
+<div>
+
+<b>Selecciona un escenario.</b>
+
+<p>
+Usa Ideal, Bajo Estrés o Mal Condicionado.
+</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="stepnum">2</div>
+
+<div>
+
+<b>Revisa A y b.</b>
+
+<p>
+Puedes modificar cualquier valor.
+La página recalcula automáticamente después de una edición.
+</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="stepnum">3</div>
+
+<div>
+
+<b>Configura el método.</b>
+
+<p>
+Selecciona Cholesky, LU o Gauss y decide si usar Jacobi.
+</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="stepnum">4</div>
+
+<div>
+
+<b>Ejecuta el análisis.</b>
+
+<p>
+Pulsa Ejecutar análisis para mostrar la referencia,
+GC, GCP, errores y condición.
+</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="stepnum">5</div>
+
+<div>
+
+<b>Compara.</b>
+
+<p>
+Genera la comparación de los tres escenarios.
+</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="stepnum">6</div>
+
+<div>
+
+<b>Ejecuta QA.</b>
+
+<p>
+Las pruebas verifican escenarios, entradas inválidas,
+edición dinámica y comparación GC/GCP.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="info">
+
+<b>Recomendación para la exposición:</b>
+comienza con Ideal, explica Ax=b, ejecuta, muestra el residuo
+y los errores; después cambia a Mal Condicionado y explica
+por qué Jacobi puede mejorar el escalamiento.
+
+</div>
+
+</section>
+
+<section id="caso">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">Módulo 2</div>
+
+<h2>Caso financiero y modelado</h2>
+
+<p>
+Aplicación ilustrativa para cuatro unidades organizacionales.
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Contexto</h3>
+
+<p>
+Una organización desea planificar recursos para cuatro unidades:
+infraestructura tecnológica, ciberseguridad, capacitación e innovación.
+El modelo permite estudiar una asignación compatible con necesidades
+y relaciones internas.
+</p>
+
+<div class="grid2">
+
+<div class="result">
+
+<b>x₁ — Infraestructura tecnológica</b>
+
+<p>
+Equipamiento, redes, servidores y mantenimiento.
+</p>
+
+</div>
+
+<div class="result">
+
+<b>x₂ — Ciberseguridad</b>
+
+<p>
+Protección de información y continuidad.
+</p>
+
+</div>
+
+<div class="result">
+
+<b>x₃ — Capacitación</b>
+
+<p>
+Formación y actualización del personal.
+</p>
+
+</div>
+
+<div class="result">
+
+<b>x₄ — Innovación</b>
+
+<p>
+Mejora de procesos y desarrollo de proyectos.
+</p>
+
+</div>
+
+</div>
+
+<div class="result">
+
+<h3>Unidad de análisis</h3>
+
+<p>
+
+<b>x₁, x₂, x₃, x₄</b> se expresan en
+<b>unidades presupuestarias normalizadas (UPN)</b>.
+Una UPN es una unidad didáctica de capacidad de recursos
+y no equivale automáticamente a bolivianos.
+
+</p>
+
+<p>
+
+<b>b</b> representa necesidades netas priorizadas en UPN.
+<b>A</b> es una matriz adimensional de ponderaciones y acoplamientos.
+
+</p>
+
+</div>
+
+<div class="result">
+
+<h3>Interpretación de los coeficientes</h3>
+
+<p>
+
+La diagonal aᵢᵢ representa la intensidad de requerimiento
+propio de la unidad i.
+
+Los elementos fuera de la diagonal representan acoplamientos
+entre unidades.
+
+La simetría aᵢⱼ=aⱼᵢ representa una relación mutua
+en este modelo didáctico.
+
+</p>
+
+</div>
+
+<div class="warning">
+
+<b>Importante:</b>
+los datos son sintéticos e ilustrativos.
+No son presupuestos reales de la UMSA ni de una empresa.
+
+Para una aplicación financiera real se deben recopilar
+datos institucionales autorizados, definir unidades monetarias
+y calibrar cada coeficiente.
+
+</div>
+
+<h3>Aplicación a Ingeniería de Sistemas</h3>
+
+<p>
+
+El flujo del sistema es:
+
+captura → validación → modelado → solución directa →
+GC/GCP → errores y condicionamiento → reporte.
+
+La interfaz gestiona datos, el motor numérico ejecuta algoritmos
+y QA verifica reglas funcionales.
+
+</p>
+
+</div>
+
+</section>
+
+<section id="modelo">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">Módulo 3</div>
+
+<h2>Modelo matemático Ax=b</h2>
+
+<p>
+Formulación, simetría y definición positiva.
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="result">
+
+<h3 style="font-size:25px">
+Ax = b
+</h3>
+
+<p>
+
+<b>A:</b> matriz de coeficientes y acoplamientos.<br>
+
+<b>x:</b> vector de cuatro asignaciones desconocidas.<br>
+
+<b>b:</b> vector de necesidades del escenario.
+
+</p>
+
+</div>
+
+<p>
+
+Los métodos GC y GCP requieren una matriz simétrica definida positiva.
+
+La aplicación comprueba simetría, realiza Cholesky y calcula
+los menores principales líderes mediante el criterio de Sylvester.
+
+</p>
+
+<div id="matrixProof" class="result">
+
+Carga y ejecuta un escenario para visualizar la verificación.
+
+</div>
+
+<div class="info">
+
+Para el escenario mal condicionado se utiliza
+
+<b>A = DTD</b>,
+
+con D no singular y T simétrica definida positiva.
+
+Por tanto, para cualquier y≠0:
+
+<b>yᵀAy=(Dy)ᵀT(Dy)&gt;0.</b>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="datos">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">Módulo 4</div>
+
+<h2>Datos y ejecución</h2>
+
+<p>
+Los cambios en A y b generan recálculo automático.
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="grid2">
+
+<div class="field">
+
+<label>
+Nombre del escenario
+</label>
+
+<input id="scenarioName"
+value="Escenario Ideal">
+
+</div>
+
+<div class="field">
+
+<label>
+Método directo
+</label>
+
+<select id="directMethod">
+
+<option value="cholesky">
+Cholesky
+</option>
+
+<option value="lu">
+LU con pivoteo parcial
+</option>
+
+<option value="gauss">
+Gauss con pivoteo parcial
+</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>
+Precondicionador
+</label>
+
+<select id="preconditioner">
+
+<option value="jacobi">
+Jacobi: M=diag(A)
+</option>
+
+<option value="none">
+Sin precondicionador
+</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>
+Vector inicial
+</label>
+
+<select id="x0">
+
+<option value="zero">
+x₀=0
+</option>
+
+<option value="one">
+x₀=(1,1,1,1)
+</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>
+Tolerancia
+</label>
+
+<input id="tol"
+type="number"
+value="0.000001"
+min="1e-12"
+max="0.1"
+step="any">
+
+</div>
+
+<div class="field">
+
+<label>
+Máximo de iteraciones
+</label>
+
+<input id="maxit"
+type="number"
+value="1000"
+min="1"
+max="10000">
+
+</div>
+
+</div>
+
+<h3>Matriz A</h3>
+
+<div class="matrixwrap">
+<table id="matrixTable"></table>
+</div>
+
+<h3 style="margin-top:16px">
+Vector b
+</h3>
+
+<div class="matrixwrap">
+<table id="vectorTable"></table>
+</div>
+
+<div class="btnrow">
+
+<button class="btn"
+onclick="runAnalysis()">
+▶ Ejecutar análisis
+</button>
+
+<button class="btn secondary"
+onclick="resetScenario()">
+Restaurar
+</button>
+
+<button class="btn light"
+onclick="loadScenario('ideal')">
+Volver a Ideal
+</button>
+
+</div>
+
+<div id="inputStatus"
+class="muted"
+style="margin-top:10px">
+Selecciona un escenario.
+</div>
+
+</div>
+
+</section>
+
+<section id="escenarios">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">Módulo 5</div>
+
+<h2>Tres escenarios</h2>
+
+<p>
+Construidos para estudiar estabilidad, estrés y escalamiento.
+</p>
+
+</div>
+
+</div>
+
+<div class="grid3">
+
+<div class="card">
+
+<span class="pill success">
+Estable
+</span>
+
+<h3>
+Ideal
+</h3>
+
+<p>
+Relaciones moderadas y escalas similares.
+</p>
+
+<button class="btn"
+onclick="loadScenario('ideal')">
+Cargar
+</button>
+
+</div>
+
+<div class="card">
+
+<span class="pill"
+style="background:var(--warnbg);color:var(--warn)">
+Estrés
+</span>
+
+<h3>
+Bajo Estrés
+</h3>
+
+<p>
+Mayor demanda y acoplamientos más intensos.
+</p>
+
+<button class="btn"
+onclick="loadScenario('stress')">
+Cargar
+</button>
+
+</div>
+
+<div class="card">
+
+<span class="pill"
+style="background:var(--badbg);color:var(--bad)">
+Mal condicionado
+</span>
+
+<h3>
+Mal Condicionado
+</h3>
+
+<p>
+Escalas diagonales muy diferentes para estudiar Jacobi.
+</p>
+
+<button class="btn"
+onclick="loadScenario('bad')">
+Cargar
+</button>
+
+</div>
+
+</div>
+
+<div class="info">
+
+El caso mal condicionado usa
+
+<b>A=DTD</b>
+
+con
+
+<b>D=diag(1,10,100,1000)</b>.
+
+La transformación diagonal crea escalas muy distintas
+sin destruir la definición positiva.
+
+</div>
+
+</section>
+
+<section id="referencia">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">
+Módulo 6
+</div>
+
+<h2>
+Solución numérica de referencia
+</h2>
+
+<p>
+Solución calculada por el método directo elegido.
+</p>
+
+</div>
+
+</div>
+
+<div class="card"
+id="referenceResult">
+Ejecuta el análisis.
+</div>
+
+</section>
+
+<section id="comparacion">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">
+Módulo 7
+</div>
+
+<h2>
+GC vs GCP
+</h2>
+
+<p>
+Comparación del método sin y con precondicionamiento.
+</p>
+
+</div>
+
+</div>
+
+<div class="grid2">
+
+<div class="card">
+
+<h3>
+Gradientes Conjugados (GC)
+</h3>
+
+<div id="gcResult">
+Pendiente.
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+Gradientes Conjugados Precondicionados (GCP)
+</h3>
+
+<div id="pcgResult">
+Pendiente.
+</div>
+
+</div>
+
+</div>
+
+<div class="card"
+style="margin-top:13px">
+
+<h3>
+Historial del residuo
+</h3>
+
+<div class="chart">
+<canvas id="chart"></canvas>
+</div>
+
+<p class="small">
+Se grafica ‖rₖ‖₂/‖b‖₂ en escala logarítmica.
+</p>
+
+</div>
+
+<div class="info">
+
+<b>GCP con Jacobi:</b>
+
+M=diag(A).
+
+Se resuelve Mzₖ=rₖ; se calcula β,
+se actualiza la dirección p,
+se calcula α y se actualizan x y r.
+
+El residuo verdadero se recalcula al final.
+
+</div>
+
+</section>
+
+<section id="errores">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">
+Módulo 8
+</div>
+
+<h2>
+Errores y condicionamiento
+</h2>
+
+<p>
+Comparación de GCP contra la solución de referencia.
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div id="errorTable">
+Ejecuta el análisis.
+</div>
+
+<div class="grid2">
+
+<div class="result">
+
+<span class="muted">
+κ₂(A)
+</span>
+
+<h2 id="condA">
+—
+</h2>
+
+</div>
+
+<div class="result">
+
+<span class="muted">
+κ₂ precondicionada
+</span>
+
+<h2 id="condPre">
+—
+</h2>
+
+</div>
+
+</div>
+
+<div class="result">
+
+<span class="muted">
+Residuo relativo global GCP
+</span>
+
+<h2 id="residual">
+—
+</h2>
+
+</div>
+
+<div class="info">
+
+<b>Fórmulas:</b>
+
+Eaᵢ=|xrefᵢ−xGCPᵢ|
+
+Erᵢ=Eaᵢ/|xrefᵢ|
+
+Epᵢ=100·Erᵢ
+
+Residuo relativo global=‖b−AxGCP‖₂/‖b‖₂.
+
+Para A SPD:
+
+κ₂(A)=λmax/λmin.
+
+</div>
+
+</div>
+
+</section>
+
+<section id="comparativa">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">
+Módulo 9
+</div>
+
+<h2>
+Comparación global
+</h2>
+
+<p>
+Los tres escenarios se ejecutan con la configuración actual.
+</p>
+
+</div>
+
+<button class="btn"
+onclick="compareScenarios()">
+Generar comparación
+</button>
+
+</div>
+
+<div class="card">
+
+<div id="comparisonTable">
+Pulsa Generar comparación.
+</div>
+
+</div>
+
+</section>
+
+<section id="qa">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">
+Módulo 10
+</div>
+
+<h2>
+Pruebas QA
+</h2>
+
+<p>
+Pruebas funcionales integradas en la página.
+</p>
+
+</div>
+
+<button class="btn"
+onclick="runQA()">
+Ejecutar todas
+</button>
+
+</div>
+
+<div class="card"
+id="qaResults">
+
+Las pruebas aún no se ejecutaron.
+
+</div>
+
+</section>
+
+<section id="cierre">
+
+<div class="head">
+
+<div>
+
+<div class="eyebrow">
+Módulo 11
+</div>
+
+<h2>
+Interpretación y conclusiones
+</h2>
+
+<p>
+Lectura matemática y financiera de los resultados.
+</p>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div id="conclusions">
+
+<p>
+Ejecuta un escenario para generar conclusiones.
+</p>
+
+</div>
+
+<h3 style="margin-top:22px">
+Referencias
+</h3>
+
+<p>
+Suñagua S., P. (2020).
+<i>Método de Gradientes Conjugados Precondicionado</i>.
+Revista Boliviana de Matemática – UMSA.
+</p>
+
+<p>
+Golub, G. H., & Van Loan, C. F. (2013).
+<i>Matrix Computations</i>.
+Johns Hopkins University Press.
+</p>
+
+<p>
+Saad, Y. (2003).
+<i>Iterative Methods for Sparse Linear Systems</i>.
+SIAM.
+</p>
+
+</div>
+
+</section>
+
+<footer>
+
+Proyecto académico de Métodos Numéricos ·
+<b>Joel Choque Yujra</b> ·
+Ingeniería de Sistemas ·
+Universidad Mayor de San Andrés
+
+</footer>
+
+</main>
+
+</div>
+
+<script>
+
+"use strict";
+
+const NAMES=[
+"Infraestructura",
+"Ciberseguridad",
+"Capacitación",
+"Innovación"
+];
+
+const SCENARIOS={
+
+ideal:{
+name:"Escenario Ideal",
+
+A:[
+[8,-1,0,0],
+[-1,7,-1,0],
+[0,-1,6,-1],
+[0,0,-1,5]
+],
+
+b:[
+70,
+55,
+45,
+35
+]
+},
+
+stress:{
+name:"Escenario Bajo Estrés",
+
+A:[
+[10,-1.2,0,0],
+[-1.2,8,-1.1,0],
+[0,-1.1,7,-1.2],
+[0,0,-1.2,6]
+],
+
+b:[
+95,
+70,
+58,
+43
+]
+},
+
+bad:{
+name:"Escenario Mal Condicionado",
+
+A:[
+[2,-9,0,0],
+[-9,200,-90,0],
+[0,-90,20000,-900],
+[0,0,-900,2000000]
+],
+
+b:[
+10,
+250,
+10000,
+1000000
+]
+}
+
+};
+
+let activeKey="ideal";
+let original=null;
+let lastResult=null;
+let autoTimer=null;
+
+const clone=o=>JSON.parse(JSON.stringify(o));
+
+const dot=(a,b)=>
+a.reduce(
+(s,v,i)=>s+v*b[i],
+0
+);
+
+const norm=a=>
+Math.sqrt(dot(a,a));
+
+const matvec=(A,x)=>
+A.map(row=>dot(row,x));
+
+const fmt=x=>
+Number.isFinite(x)
+?
+Number(x).toExponential(5)
+:
+"No definido";
+
+function go(id){
+
+document
+.getElementById(id)
+.scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+function renderInputs(A,b){
+
+let h=
+"<thead><tr><th></th>"+
+NAMES.map(n=>"<th>"+n+"</th>").join("")+
+"</tr></thead><tbody>";
+
+for(let i=0;i<4;i++){
+
+h+="<tr><th>"+
+NAMES[i]+
+"</th>";
+
+for(let j=0;j<4;j++){
+
+h+=
+'<td><input type="number" step="any" id="a'+
+i+
+j+
+'" value="'+
+A[i][j]+
+'"></td>';
+
+}
+
+h+="</tr>";
+
+}
+
+document
+.getElementById("matrixTable")
+.innerHTML=
+h+
+"</tbody>";
+
+let v="<tbody>";
+
+for(let i=0;i<4;i++){
+
+v+=
+"<tr><th>"+
+NAMES[i]+
+"</th><td><input type=\"number\" step=\"any\" id=\"b"+
+i+
+"\" value=\""+
+b[i]+
+"\"></td></tr>";
+
+}
+
+document
+.getElementById("vectorTable")
+.innerHTML=
+v+
+"</tbody>";
+
+}
+
+function loadScenario(key){
+
+activeKey=key;
+
+original=clone(
+SCENARIOS[key]
+);
+
+document
+.getElementById("scenarioName")
+.value=
+original.name;
+
+renderInputs(
+original.A,
+original.b
+);
+
+document
+.getElementById("inputStatus")
+.textContent=
+original.name+
+" cargado.";
+
+go("datos");
+
+}
+
+function resetScenario(){
+
+if(!original)return;
+
+renderInputs(
+original.A,
+original.b
+);
+
+document
+.getElementById("scenarioName")
+.value=
+original.name;
+
+document
+.getElementById("inputStatus")
+.textContent=
+"Datos originales restaurados.";
+
+}
+
+function readInputs(){
+
+const A=[];
+
+for(let i=0;i<4;i++){
+
+A[i]=[];
+
+for(let j=0;j<4;j++){
+
+const v=
+Number(
+document.getElementById(
+"a"+i+j
+).value
+);
+
+if(!Number.isFinite(v))
+throw Error(
+"Todos los valores de A deben ser numéricos."
+);
+
+A[i][j]=v;
+
+}
+
+}
+
+const b=[];
+
+for(let i=0;i<4;i++){
+
+const v=
+Number(
+document.getElementById(
+"b"+i
+).value
+);
+
+if(!Number.isFinite(v))
+throw Error(
+"Todos los valores de b deben ser numéricos."
+);
+
+b.push(v);
+
+}
+
+return {A,b};
+
+}
+
+function symmetric(A,tol=1e-10){
+
+for(let i=0;i<4;i++){
+
+for(let j=i+1;j<4;j++){
+
+if(
+Math.abs(
+A[i][j]-A[j][i]
+)
+>
+tol*
+Math.max(
+1,
+Math.abs(A[i][j]),
+Math.abs(A[j][i])
+)
+)
+
+return false;
+
+}
+
+}
+
+return true;
+
+}
+
+function cholesky(A){
+
+const n=A.length;
+
+const L=
+Array.from(
+{length:n},
+()=>Array(n).fill(0)
+);
+
+for(let i=0;i<n;i++){
+
+for(let j=0;j<=i;j++){
+
+let s=A[i][j];
+
+for(let k=0;k<j;k++)
+s-=L[i][k]*L[j][k];
+
+if(i===j){
+
+if(
+!(s>
+1e-14*
+Math.max(
+1,
+Math.abs(A[i][i])
+))
+)
+
+throw Error(
+"A no es definida positiva."
+);
+
+L[i][j]=Math.sqrt(s);
+
+}
+
+else{
+
+L[i][j]=
+s/L[j][j];
+
+}
+
+}
+
+}
+
+return L;
+
+}
+
+function det(A){
+
+const n=A.length;
+
+const M=clone(A);
+
+let d=1;
+
+for(let k=0;k<n;k++){
+
+let p=k;
+
+for(let i=k+1;i<n;i++)
+
+if(
+Math.abs(M[i][k])>
+Math.abs(M[p][k])
+)
+
+p=i;
+
+if(
+Math.abs(M[p][k])<
+1e-30
+)
+
+return 0;
+
+if(p!==k){
+
+[
+M[p],
+M[k]
+]=[
+M[k],
+M[p]
+];
+
+d=-d;
+
+}
+
+const pivot=
+M[k][k];
+
+d*=pivot;
+
+for(let i=k+1;i<n;i++){
+
+const f=
+M[i][k]/
+pivot;
+
+for(
+let j=k+1;
+j<n;
+j++
+)
+
+M[i][j]-=
+f*
+M[k][j];
+
+}
+
+}
+
+return d;
+
+}
+
+function leadingMinors(A){
+
+const out=[];
+
+for(let k=1;k<=4;k++){
+
+const B=
+A
+.slice(0,k)
+.map(r=>r.slice(0,k));
+
+out.push(
+det(B)
+);
+
+}
+
+return out;
+
+}
+
+function solveGauss(A,b){
+
+const n=b.length;
+
+const M=
+A.map(
+(r,i)=>[
+...r,
+b[i]
+]
+);
+
+for(let k=0;k<n;k++){
+
+let p=k;
+
+for(let i=k+1;i<n;i++)
+
+if(
+Math.abs(M[i][k])>
+Math.abs(M[p][k])
+)
+
+p=i;
+
+if(
+Math.abs(M[p][k])<
+1e-14
+)
+
+throw Error(
+"Sistema singular o numéricamente singular."
+);
+
+[
+M[k],
+M[p]
+]=[
+M[p],
+M[k]
+];
+
+for(let i=k+1;i<n;i++){
+
+const f=
+M[i][k]/
+M[k][k];
+
+for(let j=k;j<=n;j++)
+
+M[i][j]-=
+f*
+M[k][j];
+
+}
+
+}
+
+const x=
+Array(n).fill(0);
+
+for(
+let i=n-1;
+i>=0;
+i--
+){
+
+let s=M[i][n];
+
+for(
+let j=i+1;
+j<n;
+j++
+)
+
+s-=
+M[i][j]*
+x[j];
+
+x[i]=
+s/
+M[i][i];
+
+}
+
+return x;
+
+}
+
+function solveLU(A,b){
+
+const n=b.length;
+
+const U=clone(A);
+
+const L=
+Array.from(
+{length:n},
+(_,i)=>
+Array.from(
+{length:n},
+(_,j)=>
+i===j?1:0
+)
+);
+
+const P=
+Array.from(
+{length:n},
+(_,i)=>i
+);
+
+for(let k=0;k<n;k++){
+
+let p=k;
+
+for(let i=k+1;i<n;i++)
+
+if(
+Math.abs(U[i][k])>
+Math.abs(U[p][k])
+)
+
+p=i;
+
+if(
+Math.abs(U[p][k])<
+1e-14
+)
+
+throw Error(
+"Pivote nulo en LU."
+);
+
+[
+U[k],
+U[p]
+]=[
+U[p],
+U[k]
+];
+
+[
+P[k],
+P[p]
+]=[
+P[p],
+P[k]
+];
+
+for(let j=0;j<k;j++)
+
+[
+L[k][j],
+L[p][j]
+]=[
+L[p][j],
+L[k][j]
+];
+
+for(let i=k+1;i<n;i++){
+
+L[i][k]=
+U[i][k]/
+U[k][k];
+
+for(
+let j=k;
+j<n;
+j++
+)
+
+U[i][j]-=
+L[i][k]*
+U[k][j];
+
+}
+
+}
+
+const pb=
+P.map(i=>b[i]);
+
+const y=
+Array(n).fill(0);
+
+const x=
+Array(n).fill(0);
+
+for(let i=0;i<n;i++){
+
+let s=pb[i];
+
+for(
+let j=0;
+j<i;
+j++
+)
+
+s-=
+L[i][j]*
+y[j];
+
+y[i]=
+s;
+
+}
+
+for(
+let i=n-1;
+i>=0;
+i--
+){
+
+let s=y[i];
+
+for(
+let j=i+1;
+j<n;
+j++
+)
+
+s-=
+U[i][j]*
+x[j];
+
+x[i]=
+s/
+U[i][i];
+
+}
+
+return x;
+
+}
+
+function solveCholesky(A,b){
+
+const L=
+cholesky(A);
+
+const n=b.length;
+
+const y=
+Array(n).fill(0);
+
+const x=
+Array(n).fill(0);
+
+for(let i=0;i<n;i++){
+
+let s=b[i];
+
+for(let j=0;j<i;j++)
+
+s-=
+L[i][j]*
+y[j];
+
+y[i]=
+s/
+L[i][i];
+
+}
+
+for(
+let i=n-1;
+i>=0;
+i--
+){
+
+let s=y[i];
+
+for(
+let j=i+1;
+j<n;
+j++
+)
+
+s-=
+L[j][i]*
+x[j];
+
+x[i]=
+s/
+L[i][i];
+
+}
+
+return x;
+
+}
+
+/* Método de Jacobi para autovalores de matrices simétricas. */
+
+function eigSym(A){
+
+const B=clone(A);
+
+const n=B.length;
+
+for(
+let iter=0;
+iter<100*n*n;
+iter++
+){
+
+let p=0;
+let q=1;
+let max=0;
+
+for(let i=0;i<n;i++)
+
+for(
+let j=i+1;
+j<n;
+j++
+)
+
+if(
+Math.abs(B[i][j])>
+max
+){
+
+max=
+Math.abs(B[i][j]);
+
+p=i;
+q=j;
+
+}
+
+if(max<1e-13)
+break;
+
+const tau=
+(
+B[q][q]-
+B[p][p]
+)/
+(
+2*B[p][q]
+);
+
+const t=
+(tau>=0?1:-1)/
+(
+Math.abs(tau)+
+Math.sqrt(1+tau*tau)
+);
+
+const c=
+1/
+Math.sqrt(1+t*t);
+
+const s=
+t*c;
+
+const app=
+B[p][p];
+
+const aqq=
+B[q][q];
+
+const apq=
+B[p][q];
+
+B[p][p]=
+app-
+t*apq;
+
+B[q][q]=
+aqq+
+t*apq;
+
+B[p][q]=
+B[q][p]=0;
+
+for(let k=0;k<n;k++){
+
+if(k===p||k===q)
+continue;
+
+const kp=
+B[k][p];
+
+const kq=
+B[k][q];
+
+B[k][p]=
+B[p][k]=
+c*kp-
+s*kq;
+
+B[k][q]=
+B[q][k]=
+s*kp+
+c*kq;
+
+}
+
+}
+
+return B.map(
+(r,i)=>r[i]
+);
+
+}
+
+function conditionSPD(A){
+
+const e=
+eigSym(A);
+
+const lo=
+Math.min(...e);
+
+const hi=
+Math.max(...e);
+
+return lo>0?
+hi/lo:
+Infinity;
+
+}
+
+function residual(A,x,b){
+
+const Ax=
+matvec(A,x);
+
+return b.map(
+(v,i)=>v-Ax[i]
+);
+
+}
+
+function relativeResidual(A,x,b){
+
+const nb=
+norm(b);
+
+return nb===0?
+NaN:
+norm(
+residual(A,x,b)
+)/
+nb;
+
+}
+
+/*
+Gradientes Conjugados.
+Si pre=true se utiliza Jacobi:
+M = diag(A)
+*/
+
+function cg(A,b,tol,maxit,x0,pre){
+
+let x=x0.slice();
+
+let r=
+residual(A,x,b);
+
+let z=
+pre
+?
+r.map(
+(v,i)=>
+v/A[i][i]
+)
+:
+r.slice();
+
+let p=z.slice();
+
+let rho=
+dot(r,z);
+
+const bn=
+norm(b)||
+1;
+
+const history=[
+norm(r)/bn
+];
+
+let converged=
+history[0]<=tol;
+
+let it=0;
+
+while(
+!converged&&
+it<maxit
+){
+
+const Ap=
+matvec(A,p);
+
+const den=
+dot(p,Ap);
+
+if(
+!(den>0)||
+!Number.isFinite(den)
+)
+
+break;
+
+const alpha=
+rho/den;
+
+for(let i=0;i<4;i++){
+
+x[i]+=
+alpha*p[i];
+
+r[i]-=
+alpha*Ap[i];
+
+}
+
+const rel=
+norm(r)/bn;
+
+history.push(rel);
+
+if(rel<=tol){
+
+converged=true;
+
+it++;
+
+break;
+
+}
+
+const znew=
+pre
+?
+r.map(
+(v,i)=>
+v/A[i][i]
+)
+:
+r.slice();
+
+const rhoNew=
+dot(r,znew);
+
+if(
+!Number.isFinite(rhoNew)||
+Math.abs(rho)<1e-300
+)
+
+break;
+
+const beta=
+rhoNew/rho;
+
+p=
+znew.map(
+(v,i)=>
+v+
+beta*p[i]
+);
+
+z=znew;
+
+rho=rhoNew;
+
+it++;
+
+}
+
+const trueRel=
+relativeResidual(
+A,x,b
+);
+
+if(trueRel<=tol)
+converged=true;
+
+return{
+x,
+it,
+history,
+converged,
+trueRel
+};
+
+}
+
+function matrixDiagnostics(A){
+
+if(!symmetric(A))
+throw Error(
+"A no es simétrica."
+);
+
+const mins=
+leadingMinors(A);
+
+if(
+mins.some(
+v=>!(v>0)
+)
+)
+
+throw Error(
+"No cumple definición positiva por criterio de Sylvester."
+);
+
+cholesky(A);
+
+return mins;
+
+}
+
+function settings(){
+
+const tol=
+Number(
+document.getElementById("tol").value
+);
+
+const maxit=
+Number(
+document.getElementById("maxit").value
+);
+
+if(
+!(tol>0&&tol<1)
+)
+
+throw Error(
+"La tolerancia debe estar entre 0 y 1."
+);
+
+if(
+!Number.isInteger(maxit)||
+maxit<1||
+maxit>10000
+)
+
+throw Error(
+"Máximo de iteraciones inválido."
+);
+
+return{
+
+tol,
+maxit,
+
+method:
+document.getElementById(
+"directMethod"
+).value,
+
+pre:
+document.getElementById(
+"preconditioner"
+).value,
+
+x0:
+document.getElementById(
+"x0"
+).value
+
+};
+
+}
+
+function calculate(A,b,s){
+
+const mins=
+matrixDiagnostics(A);
+
+const ref=
+s.method==="gauss"
+?
+solveGauss(A,b)
+:
+s.method==="lu"
+?
+solveLU(A,b)
+:
+solveCholesky(A,b);
+
+const x0=
+s.x0==="one"
+?
+[1,1,1,1]
+:
+[0,0,0,0];
+
+const gc=
+cg(
+A,
+b,
+s.tol,
+s.maxit,
+x0,
+false
+);
+
+const pcg=
+cg(
+A,
+b,
+s.tol,
+s.maxit,
+x0,
+s.pre==="jacobi"
+);
+
+const diag=
+A.map(
+(r,i)=>r[i]
+);
+
+if(
+diag.some(
+v=>!(v>0)
+)
+)
+
+throw Error(
+"Jacobi requiere diagonal positiva."
+);
+
+const S=
+A.map(
+(r,i)=>
+r.map(
+(v,j)=>
+v/
+Math.sqrt(
+diag[i]*
+diag[j]
+)
+)
+);
+
+return{
+
+A,
+b,
+ref,
+gc,
+pcg,
+mins,
+
+kA:
+conditionSPD(A),
+
+kPre:
+conditionSPD(S),
+
+err:
+pcg.x.map(
+(v,i)=>
+Math.abs(
+ref[i]-v
+)
+),
+
+resid:
+relativeResidual(
+A,
+pcg.x,
+b
+)
+
+};
+
+}
+
+function vectorHTML(x){
+
+return '<div class="result">'+
+
+x.map(
+(v,i)=>
+"<b>"+
+NAMES[i]+
+":</b> "+
+fmt(v)
+).join("<br>")+
+
+"</div>";
+
+}
+
+function runAnalysis(){
+
+try{
+
+const {A,b}=
+readInputs();
+
+const s=
+settings();
+
+const r=
+calculate(
+A,
+b,
+s
+);
+
+lastResult=r;
+
+document.getElementById(
+"matrixProof"
+).innerHTML=
+
+'<span class="pill success">'+
+'Simétrica: SÍ'+
+'</span> '+
+
+'<span class="pill success">'+
+'Definida positiva: SÍ'+
+'</span>'+
+
+"<p>Menores principales: "+
+r.mins.map(fmt).join(" · ")+
+"</p>"+
+
+"<p>Cholesky se ejecutó correctamente.</p>";
+
+document.getElementById(
+"referenceResult"
+).innerHTML=
+
+'<span class="pill success">Calculada</span>'+
+
+"<p>Método directo: <b>"+
+s.method.toUpperCase()+
+"</b></p>"+
+
+vectorHTML(
+r.ref
+);
+
+document.getElementById(
+"gcResult"
+).innerHTML=
+
+'<span class="pill '+
+(r.gc.converged?
+"success":
+"failure")+
+'">'+
+
+(r.gc.converged?
+"CONVERGIÓ":
+"NO CONVERGIÓ")+
+
+"</span>"+
+
+"<p>Iteraciones: <b>"+
+r.gc.it+
+"</b><br>"+
+"Residuo verdadero: "+
+fmt(r.gc.trueRel)+
+"</p>"+
+
+vectorHTML(
+r.gc.x
+);
+
+document.getElementById(
+"pcgResult"
+).innerHTML=
+
+'<span class="pill '+
+(r.pcg.converged?
+"success":
+"failure")+
+'">'+
+
+(r.pcg.converged?
+"CONVERGIÓ":
+"NO CONVERGIÓ")+
+
+"</span>"+
+
+"<p>Precondicionador: <b>"+
+
+(s.pre==="jacobi"?
+"Jacobi":
+"Ninguno")+
+
+"</b><br>"+
+
+"Iteraciones: <b>"+
+r.pcg.it+
+"</b><br>"+
+
+"Residuo verdadero: "+
+fmt(r.pcg.trueRel)+
+
+"</p>"+
+
+vectorHTML(
+r.pcg.x
+);
+
+let t=
+"<div class=\"matrixwrap\">"+
+"<table>"+
+"<thead>"+
+"<tr>"+
+"<th>Variable</th>"+
+"<th>Referencia</th>"+
+"<th>GCP</th>"+
+"<th>Ea</th>"+
+"<th>Er</th>"+
+"<th>Ep (%)</th>"+
+"</tr>"+
+"</thead>"+
+"<tbody>";
+
+r.ref.forEach(
+(v,i)=>{
+
+const er=
+v===0
+?
+NaN
+:
+r.err[i]/
+Math.abs(v);
+
+t+=
+"<tr>"+
+"<td>"+
+NAMES[i]+
+"</td>"+
+
+"<td>"+
+fmt(v)+
+"</td>"+
+
+"<td>"+
+fmt(r.pcg.x[i])+
+"</td>"+
+
+"<td>"+
+fmt(r.err[i])+
+"</td>"+
+
+"<td>"+
+fmt(er)+
+"</td>"+
+
+"<td>"+
+fmt(er*100)+
+"</td>"+
+
+"</tr>";
+
+});
+
+document.getElementById(
+"errorTable"
+).innerHTML=
+t+
+"</tbody></table></div>";
+
+document.getElementById(
+"condA"
+).textContent=
+fmt(r.kA);
+
+document.getElementById(
+"condPre"
+).textContent=
+fmt(r.kPre);
+
+document.getElementById(
+"residual"
+).textContent=
+fmt(r.resid);
+
+drawChart(
+r.gc.history,
+r.pcg.history
+);
+
+const improvement=
+r.pcg.it<=r.gc.it;
+
+document.getElementById(
+"conclusions"
+).innerHTML=
+
+"<p><b>Condicionamiento:</b> κ₂(A)="+
+fmt(r.kA)+
+" y κ₂ precondicionada="+
+fmt(r.kPre)+
+".</p>"+
+
+"<p><b>Convergencia:</b> GC "+
+(r.gc.converged?
+"convergió":
+"no convergió")+
+
+" en "+
+r.gc.it+
+" iteraciones; GCP "+
+
+(r.pcg.converged?
+"convergió":
+"no convergió")+
+
+" en "+
+r.pcg.it+
+" iteraciones.</p>"+
+
+"<p><b>Comparación:</b> en este escenario, GCP "+
+(improvement?
+"utilizó igual o menos iteraciones que GC":
+"utilizó más iteraciones que GC")+
+". La conclusión debe limitarse a los datos observados.</p>"+
+
+"<p><b>Interpretación financiera:</b> x representa asignaciones en UPN dentro de este modelo didáctico. Para convertirlas en dinero real se requiere una escala monetaria y datos institucionales calibrados.</p>";
+
+document.getElementById(
+"inputStatus"
+).textContent=
+"Análisis completado correctamente.";
+
+}
+
+catch(e){
+
+document.getElementById(
+"inputStatus"
+).textContent=
+"Error: "+
+e.message;
+
+document.getElementById(
+"matrixProof"
+).innerHTML=
+
+'<span class="pill failure">'+
+"ENTRADA NO VÁLIDA"+
+"</span>"+
+
+"<p>"+
+escapeHTML(e.message)+
+"</p>";
+
+}
+
+}
+
+function escapeHTML(s){
+
+return String(s)
+.replace(
+/[&<>"']/g,
+c=>
+({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[c])
+);
+
+}
+
+function drawChart(a,b){
+
+const canvas=
+document.getElementById(
+"chart"
+);
+
+const ctx=
+canvas.getContext("2d");
+
+const dpr=
+window.devicePixelRatio||
+1;
+
+const w=
+canvas.clientWidth;
+
+const h=
+canvas.clientHeight;
+
+canvas.width=
+w*dpr;
+
+canvas.height=
+h*dpr;
+
+ctx.scale(
+dpr,
+dpr
+);
+
+ctx.clearRect(
+0,
+0,
+w,
+h
+);
+
+const vals=
+[...a,...b]
+.filter(
+v=>
+v>0&&
+Number.isFinite(v)
+);
+
+const hi=
+Math.max(
+0,
+...vals.map(
+v=>Math.log10(v)
+)
+);
+
+const lo=
+Math.min(
+-12,
+...vals.map(
+v=>Math.log10(v)
+)
+);
+
+const pad=38;
+
+ctx.strokeStyle="#e3e9f2";
+
+ctx.fillStyle="#728099";
+
+ctx.font=
+"10px Arial";
+
+for(
+let i=0;
+i<5;
+i++
+){
+
+const y=
+pad+
+i*
+(h-2*pad)/
+4;
+
+ctx.beginPath();
+
+ctx.moveTo(
+pad,
+y
+);
+
+ctx.lineTo(
+w-10,
+y
+);
+
+ctx.stroke();
+
+ctx.fillText(
+(
+hi-
+(hi-lo)*i/4
+).toFixed(1),
+3,
+y+3
+);
+
+}
+
+function plot(arr,color){
+
+if(!arr.length)
+return;
+
+ctx.strokeStyle=color;
+
+ctx.lineWidth=2.4;
+
+ctx.beginPath();
+
+arr.forEach(
+(v,i)=>{
+
+const x=
+pad+
+i*
+(w-pad-12)/
+Math.max(
+1,
+Math.max(
+a.length,
+b.length
+)-1
+);
+
+const y=
+pad+
+(
+hi-
+Math.log10(
+Math.max(
+v,
+1e-15
+)
+)
+)/
+(hi-lo||1)*
+(h-2*pad);
+
+if(i===0)
+ctx.moveTo(x,y);
+else
+ctx.lineTo(x,y);
+
+}
+);
+
+ctx.stroke();
+
+}
+
+plot(a,"#315be8");
+plot(b,"#159b70");
+
+ctx.fillStyle="#315be8";
+ctx.fillText("GC",pad,13);
+
+ctx.fillStyle="#159b70";
+ctx.fillText("GCP",pad+35,13);
+
+}
+
+function compareScenarios(){
+
+try{
+
+const s=
+settings();
+
+const keys=[
+"ideal",
+"stress",
+"bad"
+];
+
+const rows=
+keys.map(
+k=>{
+
+const q=
+SCENARIOS[k];
+
+return{
+key:k,
+r:
+calculate(
+q.A,
+q.b,
+s
+)
+};
+
+}
+);
+
+let h=
+"<div class=\"matrixwrap\">"+
+"<table>"+
+"<thead>"+
+"<tr>"+
+"<th>Indicador</th>"+
+"<th>Ideal</th>"+
+"<th>Bajo Estrés</th>"+
+"<th>Mal Condicionado</th>"+
+"</tr>"+
+"</thead>"+
+"<tbody>";
+
+function row(label,fn){
+
+h+=
+"<tr><th>"+
+label+
+"</th>";
+
+rows.forEach(
+o=>
+h+=
+"<td>"+
+fn(o.r)+
+"</td>"
+);
+
+h+=
+"</tr>";
+
+}
+
+row(
+"Referencia",
+r=>
+r.ref.map(fmt).join("<br>")
+);
+
+row(
+"GCP",
+r=>
+r.pcg.x.map(fmt).join("<br>")
+);
+
+row(
+"Ea",
+r=>
+r.err.map(fmt).join("<br>")
+);
+
+row(
+"Ep (%)",
+r=>
+r.ref.map(
+(v,i)=>
+fmt(
+v===0?
+NaN:
+r.err[i]/
+Math.abs(v)*
+100
+)
+).join("<br>")
+);
+
+row(
+"Iteraciones GC",
+r=>
+r.gc.it
+);
+
+row(
+"Iteraciones GCP",
+r=>
+r.pcg.it
+);
+
+row(
+"κ₂(A)",
+r=>
+fmt(r.kA)
+);
+
+row(
+"κ₂ precondicionada",
+r=>
+fmt(r.kPre)
+);
+
+row(
+"Residuo GCP",
+r=>
+fmt(r.resid)
+);
+
+row(
+"GCP converge",
+r=>
+r.pcg.converged?
+"Sí":
+"No"
+);
+
+h+=
+"</tbody></table></div>";
+
+document.getElementById(
+"comparisonTable"
+).innerHTML=h;
+
+}
+
+catch(e){
+
+document.getElementById(
+"comparisonTable"
+).innerHTML=
+
+'<span class="pill failure">ERROR</span>'+
+"<p>"+
+escapeHTML(e.message)+
+"</p>";
+
+}
+
+}
+
+async function runQA(){
+
+const out=[];
+
+function test(
+name,
+expected,
+fn
+){
+
+try{
+
+const got=
+fn();
+
+out.push({
+name,
+expected,
+got,
+ok:true
+});
+
+}
+
+catch(e){
+
+out.push({
+name,
+expected,
+got:e.message,
+ok:false
+});
+
+}
+
+}
+
+test(
+
+"Escenarios válidos",
+
+"Los tres escenarios deben ser simétricos y SPD",
+
+()=>{
+
+Object.values(
+SCENARIOS
+).forEach(
+q=>
+matrixDiagnostics(
+q.A
+)
+);
+
+return "Los tres escenarios superan simetría, Sylvester y Cholesky.";
+
+}
+
+);
+
+test(
+
+"Matrices inválidas",
+
+"Rechazar matriz no simétrica y SPD falsa",
+
+()=>{
+
+const a=[
+[2,1,0,0],
+[0,2,0,0],
+[0,0,2,0],
+[0,0,0,2]
+];
+
+const b=[
+[1,2,0,0],
+[2,1,0,0],
+[0,0,2,0],
+[0,0,0,2]
+];
+
+let x=false;
+let y=false;
+
+try{
+matrixDiagnostics(a);
+}
+catch(e){
+x=true;
+}
+
+try{
+matrixDiagnostics(b);
+}
+catch(e){
+y=true;
+}
+
+if(!x||!y)
+throw Error(
+"No se detectaron ambas matrices inválidas."
+);
+
+return "Se rechazaron correctamente.";
+
+}
+
+);
+
+test(
+
+"Edición de interfaz",
+
+"Modificar A debe cambiar la solución",
+
+()=>{
+
+const q=
+SCENARIOS.ideal;
+
+const A1=
+clone(q.A);
+
+const A2=
+clone(q.A);
+
+A2[0][0]+=1;
+
+const x1=
+solveCholesky(
+A1,
+q.b
+);
+
+const x2=
+solveCholesky(
+A2,
+q.b
+);
+
+if(
+norm(
+x1.map(
+(v,i)=>
+v-x2[i]
+)
+)<1e-9
+)
+
+throw Error(
+"La solución no cambió."
+);
+
+return "La solución cambia al modificar un coeficiente.";
+
+}
+
+);
+
+test(
+
+"GC vs GCP",
+
+"GCP debe converger y permitir comparar iteraciones",
+
+()=>{
+
+const q=
+SCENARIOS.bad;
+
+const g=
+cg(
+q.A,
+q.b,
+1e-6,
+1000,
+[0,0,0,0],
+false
+);
+
+const p=
+cg(
+q.A,
+q.b,
+1e-6,
+1000,
+[0,0,0,0],
+true
+);
+
+if(!p.converged)
+throw Error(
+"GCP no convergió."
+);
+
+if(!g.converged)
+throw Error(
+"GC no convergió."
+);
+
+return
+"GC="+
+g.it+
+" iteraciones; GCP="+
+p.it+
+" iteraciones.";
+
+}
+
+);
+
+let h=
+"<div class=\"matrixwrap\">"+
+"<table>"+
+"<thead>"+
+"<tr>"+
+"<th>Prueba</th>"+
+"<th>Esperado</th>"+
+"<th>Obtenido</th>"+
+"<th>Estado</th>"+
+"</tr>"+
+"</thead>"+
+"<tbody>";
+
+out.forEach(t=>{
+
+h+=
+"<tr>"+
+"<td>"+
+t.name+
+"</td>"+
+"<td>"+
+t.expected+
+"</td>"+
+"<td>"+
+escapeHTML(
+t.got
+)+
+"</td>"+
+"<td>"+
+'<span class="pill '+
+(t.ok?
+"success":
+"failure")+
+'">'+
+(t.ok?
+"APROBADA":
+"FALLIDA")+
+"</span>"+
+"</td>"+
+"</tr>";
+
+});
+
+h+=
+"</tbody></table></div>";
+
+h+=
+"<p><b>"+
+out.filter(
+x=>x.ok
+).length+
+" de "+
+out.length+
+" pruebas aprobadas.</b></p>";
+
+document.getElementById(
+"qaResults"
+).innerHTML=h;
+
+}
+
+document
+.querySelectorAll(
+".nav a"
+)
+.forEach(
+a=>{
+
+a.addEventListener(
+"click",
+()=>{
+
+document
+.querySelectorAll(
+".nav a"
+)
+.forEach(
+x=>
+x.classList.remove(
+"active"
+)
+);
+
+a.classList.add(
+"active"
+);
+
+}
+);
+
+}
+);
+
+document.addEventListener(
+"input",
+e=>{
+
+if(
+/^a[0-3][0-3]$/.test(
+e.target.id
+)
+||
+/^b[0-3]$/.test(
+e.target.id
+)
+){
+
+clearTimeout(
+autoTimer
+);
+
+document.getElementById(
+"inputStatus"
+).textContent=
+"Cambio detectado. Recalculando…";
+
+autoTimer=
+setTimeout(
+runAnalysis,
+250
+);
+
+}
+
+}
+);
+
+window.addEventListener(
+"resize",
+()=>{
+
+if(lastResult)
+
+drawChart(
+lastResult.gc.history,
+lastResult.pcg.history
+);
+
+}
+);
+
+loadScenario("ideal");
+
+runAnalysis();
+
+</script>
+
+</body>
+</html>
